@@ -47,4 +47,22 @@ class PurchaseRequest extends AbstractRequest
         return $this->createSignatureFromString(implode('', $paramsInArray));
     }
 
+	public function getSandboxUrl() {
+		return $this->getParameter('sandboxUrl');
+    }
+
+    public function setSandboxUrl($sandboxUrl)
+    {
+        return $this->setParameter('sandboxUrl', $sandboxUrl);
+    }
+
+	public function getTestMode() {
+		return $this->getParameter('testMode');
+    }
+
+    public function setTestMode($testMode)
+    {
+        return $this->setParameter('testMode', $testMode);
+    }
+
 }

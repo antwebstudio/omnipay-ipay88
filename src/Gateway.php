@@ -20,11 +20,28 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return [
+			'sandbox' => false,
             'merchantKey' => '',
             'merchantCode' => '',
             'backendUrl' => ''
         ];
     }
+
+	public function getSandboxUrl() {
+		return $this->getParameter('sandboxUrl');
+	}
+
+	public function setSandboxUrl($sandboxUrl) {
+		return $this->setParameter('sandboxUrl', $sandboxUrl);
+	}
+
+    public function getTestMode() {
+		return $this->getParameter('testMode');
+	}
+
+	public function setTestMode($testMode) {
+		return $this->setParameter('testMode', $testMode);
+	}
 
     public function getMerchantKey()
     {
