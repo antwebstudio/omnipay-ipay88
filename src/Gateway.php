@@ -22,13 +22,19 @@ class Gateway extends AbstractGateway
         return [
             'merchantKey' => '',
             'merchantCode' => '',
-            'backendUrl' => ''
+            'backendUrl' => '',
+            'signatureType' => 'hmac_sha512',
         ];
     }
 
     public function getMerchantKey()
     {
         return $this->getParameter('merchantKey');
+    }
+
+    public function setSignatureType($signatureType)
+    {
+        return $this->setParameter('signatureType', $signatureType);
     }
 
     public function setMerchantKey($merchantKey)

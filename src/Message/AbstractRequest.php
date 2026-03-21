@@ -35,6 +35,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('merchantCode', $merchantCode);
     }
 
+    public function getSignatureType()
+    {
+        return $this->getParameter('signatureType');
+    }
+
+    public function setSignatureType($signatureType)
+    {
+        return $this->setParameter('signatureType', $signatureType);
+    }
+
     protected function guardParameters()
     {
         $this->validate(
@@ -47,12 +57,22 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         );
     }
 
-    protected function createSignatureFromString($fullStringToHash)
+    public function createSignatureFromString($fullStringToHash)
     {
-        return base64_encode($this->hex2bin(sha1($fullStringToHash)));
+        $signatureType = $this->getSignatureType();
+        
+        if ($signatureType == 'sha1') {
+            return base64_encode(self::hex2bin(sha1($fullStringToHash)));			
+        } else if ($signatureType == 'sha256') {
+            return hash('sha256', $fullStringToHash);
+        } else if ($signatureType == 'hmac_sha512') {
+            return hash_hmac('sha512', $fullStringToHash, $this->getMerchantKey());
+        } else {
+            throw new \Exception('Signature type: '.$signatureType.' is not supported.');
+        }
     }
 
-    private function hex2bin($hexSource)
+    protected static function hex2bin($hexSource)
     {
         $bin = '';
         for ($i = 0; $i < strlen($hexSource); $i = $i + 2) {
