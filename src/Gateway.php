@@ -23,6 +23,7 @@ class Gateway extends AbstractGateway
             'merchantKey' => '',
             'merchantCode' => '',
             'backendUrl' => '',
+            'forceRequery' => true,
             'signatureType' => 'hmac_sha512',
         ];
     }
@@ -30,6 +31,24 @@ class Gateway extends AbstractGateway
     public function getMerchantKey()
     {
         return $this->getParameter('merchantKey');
+    }
+
+    public function setForceRequery($boolean)
+    {
+        return $this->setParameter('forceRequery', $boolean);
+    }
+    public function getForceRequery()
+    {
+        return $this->getParameter('forceRequery');
+    }
+    public function setSandboxUrl($sandboxUrl)
+    {
+        return $this->setParameter('sandboxUrl', $sandboxUrl);
+    }
+
+    public function getSandboxUrl()
+    {
+        return $this->getParameter('sandboxUrl');
     }
 
     public function setSignatureType($signatureType)

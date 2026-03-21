@@ -30,14 +30,20 @@ class CompletePurchaseRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $data['ReQueryStatus'] = $this->httpClient
-            ->request('post', $this->endpoint.'?'.http_build_query([
-                'MerchantCode' => $this->getMerchantCode(),
-                'RefNo' => $data['RefNo'],
-                'Amount' => $data['Amount']
-                ]), [], json_encode([]))
-            ->getBody()
-            ->getContents();
+        if ($this->getForceRequery()) {
+            $sandboxUrl = $this->getSandboxUrl();
+
+            $endpoint = trim($sandboxUrl) != '' ? $sandboxUrl : $this->endpoint;
+
+            $data['ReQueryStatus'] = $this->httpClient
+                ->request('post', $endpoint.'?'.http_build_query([
+                    'MerchantCode' => $this->getMerchantCode(),
+                    'RefNo' => $data['RefNo'],
+                    'Amount' => $data['Amount']
+                    ]), [], json_encode([]))
+                ->getBody()
+                ->getContents();
+        }
 
         return $this->response = new CompletePurchaseResponse($this, $data);
     }
